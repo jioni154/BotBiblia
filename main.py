@@ -12,9 +12,10 @@ class Client(discord.Client):
         elif message.content.startswith('+amen'):
             message.content = message.content.replace('+amen','')
             message.content = message.content.strip()
-            existe, cantidad = leerLaBiblia.existePalabraEnCapitulos(message.content)
+            existe, cantidad, librosDonde = leerLaBiblia.existePalabraEnCapitulos(message.content)
             if existe:
-                await message.reply(f"La expresion \"{message.content}\" se encuentra {cantidad} de veces en la biblia")
+                nombreDeLibros = leerLaBiblia.conseguirNombreDeLibros(librosDonde)
+                await message.reply(f"La expresion \"{message.content}\" se encuentra {cantidad} de veces en la biblia.\nAparece en los libros {nombreDeLibros}")
             else:
                 await message.reply(f'La expresion \"{message.content}\" no se encuentra en la biblia')
             
@@ -23,7 +24,9 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = Client(intents=intents)
-client.run('token')
+client.run(config.token)
 
 
+            
+            
 
