@@ -18,7 +18,8 @@ class Client(discord.Client):
                 await message.reply(f"La expresion \"{message.content}\" se encuentra {cantidad} de veces en la biblia.\nAparece en los libros {nombreDeLibros}")
             else:
                 await message.reply(f'La expresion \"{message.content}\" no se encuentra en la biblia')
-            
+        elif message.content == 'morite bot de mierda' and message.author.name == 'juanmateo':
+            await client.close()  
         
 intents = discord.Intents.default()
 intents.message_content = True
