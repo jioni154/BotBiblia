@@ -18,6 +18,7 @@ async def ayuda(ctx):
     embedDeAyuda.set_footer(text='Palabra de dios')
     embedDeAyuda.add_field(name="+amen expresion", value="Busca la expresion en la biblia, te dice si existe, cantidad de veces que se repite y en que libros.",inline=False)
     embedDeAyuda.add_field(name="+superAmen", value='Busca la expresion en la biblia, te dice si existe, la cantidad de veces que se repite y te devuelve cada versiculo con el formato "Libro capitulo:versiculo" en el que aparece la palabra',inline=False)
+    embedDeAyuda.add_field(name="+existeAmen expresion", value="Busca las palabras que componen expresion en la biblia, te dice si existe alguna y cuales.",inline=False)
     await ctx.reply(embed=embedDeAyuda)
      
  
@@ -69,7 +70,26 @@ async def superAmen(ctx,*args):
     else:
         await message.reply(f'La expresion \"{message}\" no se encuentra en la biblia')
  
- 
+@bot.command()
+async def existeAmen(ctx,*args):
+    flagExiste = False
+    palabrasQueExisten=[]
+    if len(args)>0:
+        for argumento in args:
+            existe, cantidad, versiculo = leerLaBiblia.existePalabraEnCapitulos(argumento)
+            flagExiste = flagExiste or existe
+            if existe:
+                palabrasQueExisten.append(argumento)
+    else:
+        await ctx.message.reply('Agregar una oracion despues de el comando')
+        exit()
+    if flagExiste:
+        palabrasQueExisten = list(dict.fromkeys(palabrasQueExisten))
+        palabras = leerLaBiblia.conseguirNombreDeLibros(palabrasQueExisten)
+        cantidadDePalabras = len(palabrasQueExisten)
+        await ctx.message.reply(f'En ese mensaje hay {cantidadDePalabras} que estan en la biblia, son {palabras}')
+    else:
+        await ctx.message.reply('Ninguna de esas palabras esta en la biblia')
  
  
     
